@@ -1,0 +1,13 @@
+﻿@{
+
+    bool loggedAdmin = (Session["loggedAdmin"] == null) ? false : bool.Parse(Session["loggedAdmin"].ToString());
+    if (loggedAdmin)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    
+}

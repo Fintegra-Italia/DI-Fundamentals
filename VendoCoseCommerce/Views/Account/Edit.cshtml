@@ -1,0 +1,66 @@
+﻿@model VendoCoseCommerce.Models.AccountViewModel
+
+@{
+    ViewBag.Title = "Modifica Cliente";
+}
+<h3>Modifica Cliente</h3>
+<hr />
+<div class="row">
+
+    <div class="col-xs-12 col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Cognome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Cognome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TipoAccount)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TipoAccount)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+        </dl>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h4>Cambia tipo Cliente</h4>
+        @using (@Html.BeginForm("Edit", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken();
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <select name="tipo">
+                <option selected value="@Model.TipoAccount">@Model.TipoAccount</option>
+                @if (Model.TipoAccount == "Normal")
+                {
+                    <option value="Premium">Premium</option>
+                }
+                else
+                {
+                    <option value="Normal">Normal</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-sm btn-success">Ok</button>
+        }
+    </div>
+</div>

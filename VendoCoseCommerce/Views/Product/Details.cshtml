@@ -1,0 +1,56 @@
+﻿@model VendoCoseCommerce.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Dettagli Prodotto";
+}
+<style>
+    [closed]{
+        display:none;
+    }
+</style>
+<h2>Dettagli Prodotto</h2>
+
+<div class="row">
+    <div class="card col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <img style="max-width: 100%;" src="@Model.Immagine" alt="@Model.Nome" />
+            </div>
+            <div class="col-md-6">
+                <div class="d-inline-block">
+                    <h3>@Model.Nome</h3>
+                    <p>@Model.Descrizione</p>
+                    <span class="btn btn-outline-info" style="float:left;">@Model.Prezzo.ToString("C")</span>
+                    @if (Model.Attivo)
+                    {
+                    <button type="button" id="aprichiudi" class="btn btn-default btn-sm float-right">Prenota</button>
+                    }
+                    else
+                    {
+                        <span class="text-danger float-right">Non Disponibile</span>
+                    }
+                </div>
+
+                <div id="container" closed="closed" style="margin-top:25px;">
+                    @using (Html.BeginForm("Add", "Reservation", FormMethod.Post))
+                    {
+                        <input type="hidden" name="IdProdotto" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success btn-sm mt-2">Conferma</button>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#aprichiudi').on('click', function (ev) {
+        console.log($('#container').attr("closed"));
+        if ($('#container').attr("closed")) {
+            $('#container').removeAttr("closed");
+            
+        } else {
+             $('#container').attr("closed", "closed");
+        }
+    });
+</script>

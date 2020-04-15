@@ -1,0 +1,44 @@
+﻿@model List<VendoCoseCommerce.Models.ProductViewModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+    <div class="jumbotron">
+        <h1>VendoCose.com</h1>
+        <h2>Prodotti Speciali per Tutti!</h2>
+    </div>
+<style>
+    .boxed{
+        width: 300px;
+        margin: 15px;
+    }
+    .card-img-top{
+        max-height: 300px;
+    }
+</style>
+<div class="row">
+    @foreach(var product in Model)
+    {
+        <div class="card boxed border-info">
+            <img class="card-img-top" src="@product.Immagine" alt="@product.Nome" />
+            @{ string classe = (product.Attivo) ? "bg-primary" : "bg-secondary";}
+            <div class="card-header @classe text-light">
+                <div class="title">@product.Nome</div>
+            </div>
+            <div class="card-body">
+                @product.Descrizione
+            </div>
+            <div class="card-footer border-dark">
+                @if (!product.Attivo)
+                {
+                    <p class="text-danger">Prodotto non Disponibile</p>
+                }
+                
+                <span style="float:left;">@product.Prezzo.ToString("C")</span>
+                <span style="float:right;">
+                    @Html.ActionLink("Vedi", "Details", "Product", new { Id=@product.Id}, new { @class="btn btn-info"})
+                </span>
+            </div>
+        </div>
+    }
+</div>

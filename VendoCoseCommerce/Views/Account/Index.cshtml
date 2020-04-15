@@ -1,0 +1,48 @@
+﻿@model IEnumerable<VendoCoseCommerce.Models.AccountViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Lista Clienti</h2>
+<table class="table table-sm table-striped table-borderless">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cognome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cognome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoAccount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { Id=item.Id }, new { @class = "btn btn-sm btn-primary" }) 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

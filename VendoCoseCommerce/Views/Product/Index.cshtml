@@ -1,0 +1,61 @@
+﻿@model IEnumerable<VendoCoseCommerce.Models.ProductViewModel>
+
+@{
+    ViewBag.Title = "Elenco Prodotti";
+}
+
+<h2>Elenco Prodotti</h2>
+
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Immagine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrizione)
+            </th>
+            <th style="min-width:100px;">
+                @Html.DisplayNameFor(model => model.Prezzo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attivo)
+            </th>
+            <th style="min-width:195px;">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.Immagine" style="max-width:200px;max-height:200px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descrizione)
+                </td>
+
+                <td>
+                    @item.Prezzo.ToString("C")
+                </td>
+                <td>
+                    @{ 
+                        string classe = (item.Attivo) ? "btn btn-success btn-sm" : "btn btn-warning btn-sm";
+                        string disponibilita = (item.Attivo) ? "Disponibile" : "Non Disponibile";
+                    }
+                    <div class="@classe">@disponibilita</div>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" }) 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

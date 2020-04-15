@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - VendoCose.com</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @{ 
+        DomainModel.Manager account = null;
+        bool logged = (Session["loggedAdmin"] == null) ? false : bool.Parse(Session["loggedAdmin"].ToString());
+        if (logged)
+        {
+            account = (DomainModel.Manager)Session["admin"];
+        }
+    }
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">VendoCose.com</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="~/Home/Index">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <div class="bg-primary text-light">
+                @if (account != null)
+                {
+                    <span class="d-inline-block">Ciao @account.Nome  @account.Cognome</span>
+                    <a class="nav-link btn-warning text-light d-inline-block" href="~/AdminArea/Index">Admin Area <span class="sr-only">(current)</span></a>
+                }
+                @if (logged)
+                {
+                    <a class="nav-link btn-danger text-center d-inline-block" href="~/Account/Logout">Logout <span class="sr-only">(current)</span></a>
+                }
+                else
+                {
+                    <a class="nav-link btn-success text-center" href="~/Account/Login">Login <span class="sr-only">(current)</span></a>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - VendoCose.com</p>
+        </footer>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+﻿@model VendoCoseCommerce.Models.ReservationResumeViewModel
+
+@{
+    ViewBag.Title = "Lista Prenotazioni";
+}
+<div class="row">
+    <h2>Lista Prenotazioni Attive</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Data
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Nome Prodotto
+            </th>
+            <th>
+                Prezzo
+            </th>
+            <th>
+                Confermata
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.listaPrenotazioniAttive)
+        {
+            <tr>
+                <td>
+                    @item.Data.ToString()
+                </td>
+                <td>
+                    @item.Cliente
+                </td>
+                <td>
+                    @item.NomeProdotto
+                </td>
+                <td>
+                    @item.Prezzo.ToString("C")
+                </td>
+                <td>
+                    @{
+                        string stato = (item.Confermata) ? "Confermata" : "Non Confermata";
+                        string classe = (item.Confermata) ? "btn btn-success" : "btn btn-warning";
+                    }
+                    <button class="@classe">@stato</button>
+                </td>
+                <td>
+                    @Html.ActionLink("Conferma", "Confirm", "Reservation", new { id = item.Id }, new { @class = "btn btn-sm btn-success" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<div class="row">
+    <h2>Lista Prenotazioni Confermate</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Data
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Nome Prodotto
+            </th>
+            <th>
+                Prezzo
+            </th>
+            <th>
+               Data Conferma
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.listaPrenotazioniConfermate)
+        {
+            <tr>
+                <td>
+                    @item.Data.ToString()
+                </td>
+                <td>
+                    @item.Cliente
+                </td>
+                <td>
+                    @item.NomeProdotto
+                </td>
+                <td>
+                    @item.Prezzo.ToString("C")
+                </td>
+                <td>
+                    @item.DataConferma
+                </td>
+                <td>
+                    @Html.ActionLink("Evadi", "Complete", new { Id = item.Id }) 
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<div class="row">
+    <h2>Lista Prenotazioni Evase</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Data
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Nome Prodotto
+            </th>
+            <th>
+                Prezzo
+            </th>
+            <th>
+                Evasa
+            </th>
+            <th>
+                Data Evasione
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.listaPrenotazioniEvase)
+        {
+            <tr>
+                <td>
+                    @item.Data.ToString()
+                </td>
+                <td>
+                    @item.Cliente
+                </td>
+                <td>
+                    @item.NomeProdotto
+                </td>
+                <td>
+                    @item.Prezzo.ToString("C")
+                </td>
+                <td>
+                    @{
+                        string stato = (item.Evasa) ? "Evasa" : "Non Evasa";
+                        string classe = (item.Evasa) ? "btn btn-success" : "btn btn-warning";
+                    }
+                    <button class="@classe">@stato</button>
+                </td>
+                <td>
+                    @item.DataEvasione.ToString()
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+

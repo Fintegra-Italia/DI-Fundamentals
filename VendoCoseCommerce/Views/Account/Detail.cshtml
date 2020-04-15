@@ -1,0 +1,54 @@
+﻿@model VendoCoseCommerce.Models.AccountDetailViewModel
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2 class="text-center">Dettaglio Account</h2>
+
+
+<div class="row mt-5">
+    <div class="col-xs-12 col-md-6">
+        <h5>Nome: @Model.Account.Nome</h5>
+        <h5>Cognome: @Model.Account.Cognome</h5>
+        <h5>Tipo Account: @Model.Account.TipoAccount</h5>
+        <h5>Email: @Model.Account.Email</h5>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h5>N.Prodotti:  @Model.RiepilogoPrenotazioni.NProdotti</h5>
+        <h5>Totale: @Model.RiepilogoPrenotazioni.Totale.ToString("C")</h5>
+        <h5>Elenco Prenotazioni</h5>
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome Prodotto</th>
+                    <th>Prezzo</th>
+                    <th>Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var pren in Model.RiepilogoPrenotazioni.ListaPrenotazioni)
+                {
+                <tr>
+                    <td>@pren.NomeProdotto</td>
+                    <td>@pren.Prezzo.ToString("C")</td>
+                    <td>@Html.ActionLink("Vedi", "Details", "Product", new { Id = @pren.IdProdotto }, new { @class = "btn btn-info" })</td>
+                    <td>
+                        @{ 
+                            string stato = (pren.Confermata) ? (pren.Evasa) ? "Evasa" : "Confermata" : "Non Confermata";
+                            string classe =(pren.Confermata) ? "btn btn-sm btn-success" : "btn btn-sm btn-default";
+                        }
+                        <button class="@classe">@stato</button>
+                    </td>
+                    <td>
+                        @if (!pren.Confermata && !pren.Evasa)
+                        {
+                            @Html.ActionLink("Rimuovi", "Remove", "Reservation", new { Id = @pren.IdPrenotazione }, new { @class = "btn btn-danger" })
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
