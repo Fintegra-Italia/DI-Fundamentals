@@ -1,5 +1,5 @@
-1|SmartWatch 2|Smartwatch con funzioni fitness, contapassi etc.|smartwatch-android-display.jpg|120,50|True|
-7|Mouse Pad mondo|Mouse pad con raffigurazione mappa mondiale |mousepadmondo_.jpg|5,50|False|
+1|SmartWatch 2|Smartwatch con funzioni fitness, contapassi etc.|smartwatch-android-display.jpg|120,50|False|
+7|Mouse Pad mondo|Mouse pad con raffigurazione mappa mondiale |mousepadmondo_.jpg|12|True|
 8|Mini Cuffie Stereo|Mini cuffie stereo con microfono per chiamate e ascoltare musica|cuffiefilo.jpg|16,00|False|
 9|Cavetto USB 1mt|Cavo USB nero lunghezza 1mt|cavousb1mt.jpg|2,50|True|
 2|Mouse Longitex|Mouse senza fili, wifi con lettura laser|mouse_laser.jpg|22,00|True|

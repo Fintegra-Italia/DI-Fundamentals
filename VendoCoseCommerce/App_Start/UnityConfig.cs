@@ -1,5 +1,7 @@
 using DataLayer;
+using DataLayer.Interfaces;
 using DomainModel;
+using DomainModel.Interfaces;
 using System;
 
 using Unity;
@@ -30,7 +32,10 @@ namespace VendoCoseCommerce
 
         public static void RegisterTypes(IUnityContainer container)
         {
-
+            string productFile = "";
+            container.RegisterType<IProductWriter, ProductWriter>(new InjectionConstructor(new object[] { productFile, new ProductSerializer('|'), new ProductRowParser('|') }));
+            container.RegisterType<IProductReader, ProductReader>(new InjectionConstructor(new object[] { new ProductRowParser('|'), new FlatFileReader(productFile) }));
+            container.RegisterType<IProductRepository, ProductRepository>();
         }
     }
 }

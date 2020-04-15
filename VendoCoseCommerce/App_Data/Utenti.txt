@@ -1,4 +1,4 @@
 1,Mario,Rossi,mariorossi@gmail.com,password123,1
-2,Fabio,Bianchi,fabio_bianchi@outlook.com,123password,1
+2,Fabio,Bianchi,fabio_bianchi@outlook.com,123password,2
 3,Veronica,Verdi,veroverdi98@libero.it,PasswordABC,2
 4,Martina,Milani,martimila02@alice.it,ABCPassword,1

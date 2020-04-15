@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlatFileReader.cs" />
     <Compile Include="IndexManager.cs" />
     <Compile Include="Interfaces\IFlatFileReader.cs" />
     <Compile Include="Interfaces\IProductReader.cs" />
