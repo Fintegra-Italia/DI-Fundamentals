@@ -50,6 +50,8 @@
     <Compile Include="ManagerReader.cs" />
     <Compile Include="ProductReader.cs" />
     <Compile Include="ProductRepository.cs" />
+    <Compile Include="ProductRowParser.cs" />
+    <Compile Include="ProductSerializer.cs" />
     <Compile Include="ProductWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationConfirmedWriter.cs" />
