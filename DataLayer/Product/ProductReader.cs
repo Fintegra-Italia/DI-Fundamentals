@@ -13,8 +13,8 @@ namespace DataLayer
         IFlatFileReader fileReader;
         public ProductReader(IProductRowParser productRowParser, IFlatFileReader fileReader)
         {
-            productRowParser = productRowParser ?? throw new ArgumentNullException("Product Row Parser");
-            fileReader = fileReader ?? throw new ArgumentNullException("File Reader");
+            this.productRowParser = productRowParser ?? throw new ArgumentNullException("Product Row Parser");
+            this.fileReader = fileReader ?? throw new ArgumentNullException("File Reader");
         }
         public IList<Product> Get()
         {

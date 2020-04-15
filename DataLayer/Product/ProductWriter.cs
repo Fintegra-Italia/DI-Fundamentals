@@ -17,7 +17,8 @@ namespace DataLayer
         private string fileTemp;
         public ProductWriter(string filePath, IProductSerializer serializer, IProductRowParser parser)
         {
-            this.filePath = filePath ?? throw new ArgumentNullException("file path");
+            if(filePath==null) throw new ArgumentNullException("file path");
+            this.filePath = AppDomain.CurrentDomain.BaseDirectory + filePath;
             this.serializer = serializer ?? throw new ArgumentNullException("Product Serializer");
             this.parser = parser ?? throw new ArgumentNullException("Product Row Parser");
             this.fileTemp = TempFileSetup(filePath);

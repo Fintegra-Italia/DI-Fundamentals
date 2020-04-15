@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DomainModel;
+using DomainModel.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,11 @@ namespace VendoCoseCommerce.Controllers
 {
     public class ReservationController : Controller
     {
+        IProductRepository productRepo;
+        public ReservationController(IProductRepository productRepo)
+        {
+            this.productRepo = productRepo ?? throw new ArgumentNullException("Product Repository");
+        }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
@@ -107,10 +113,10 @@ namespace VendoCoseCommerce.Controllers
             string fileProdotti = Server.MapPath(@"/App_Data/Prodotti.txt");
             string fileIndicePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni_Last_Id.txt");
             string filePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni.txt");
-            var productReader = new ProductReader();
+            //var productReader = new ProductReader();
             var indexManager = new IndexManager();
             var reservationWriter = new ReservationWriter();
-            IList<Product> listaProdotti = productReader.Read(fileProdotti);
+            IList<Product> listaProdotti = productRepo.Get();//productReader.Read(fileProdotti);
 
             Product prodotto = listaProdotti.FirstOrDefault(e => e.Id == IdProdotto);
             if (prodotto != null)

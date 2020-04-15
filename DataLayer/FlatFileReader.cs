@@ -13,7 +13,8 @@ namespace DataLayer
         private string filePath;
         public FlatFileReader(string filePath)
         {
-            this.filePath = filePath ?? throw new ArgumentNullException("file path");
+            if (filePath == null) throw new ArgumentNullException("file path");
+            this.filePath = AppDomain.CurrentDomain.BaseDirectory + filePath ;
         }
         public IList<string> Read()
         {
@@ -21,7 +22,11 @@ namespace DataLayer
             IList<string> stringList = new List<string>();
             using(StreamReader reader = new StreamReader(filePath))
             {
-                stringList.Add(reader.ReadLine());
+                while (!reader.EndOfStream)
+                {
+                    stringList.Add(reader.ReadLine());
+                }
+                
             }
             return stringList;
         }

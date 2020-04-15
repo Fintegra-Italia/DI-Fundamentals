@@ -32,7 +32,7 @@ namespace VendoCoseCommerce
 
         public static void RegisterTypes(IUnityContainer container)
         {
-            string productFile = "";
+            string productFile = @"App_Data/Prodotti.txt";
             container.RegisterType<IProductWriter, ProductWriter>(new InjectionConstructor(new object[] { productFile, new ProductSerializer('|'), new ProductRowParser('|') }));
             container.RegisterType<IProductReader, ProductReader>(new InjectionConstructor(new object[] { new ProductRowParser('|'), new FlatFileReader(productFile) }));
             container.RegisterType<IProductRepository, ProductRepository>();
