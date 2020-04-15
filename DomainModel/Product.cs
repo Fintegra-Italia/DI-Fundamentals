@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainModel
 {
-    public class Product 
+    public class Product : Entity
     {
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string Descrizione { get; set; }
         public string Immagine { get; set; }

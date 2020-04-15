@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataLayer.Interfaces;
+using DomainModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,35 +9,76 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class ProductWriter
+    public class ProductWriter : IProductWriter
     {
-        public void Append(string filename, string riga)
+        private IProductSerializer serializer;
+        private IProductRowParser parser;
+        private string filePath;
+        public ProductWriter(string filePath, IProductSerializer serializer, IProductRowParser parser)
         {
-            if (String.IsNullOrEmpty(filename) || String.IsNullOrWhiteSpace(filename))
-                throw new ArgumentNullException("filename");
+            this.filePath = filePath ?? throw new ArgumentNullException("file path");
+            this.serializer = serializer ?? throw new ArgumentNullException("Product Serializer");
+            this.parser = parser ?? throw new ArgumentNullException("Product Row Parser");
+        }
+        //public void Append(string filename, string riga)
+        //{
+        //    if (String.IsNullOrEmpty(filename) || String.IsNullOrWhiteSpace(filename))
+        //        throw new ArgumentNullException("filename");
 
-            if (String.IsNullOrEmpty(riga) || String.IsNullOrWhiteSpace(riga))
-                throw new ArgumentNullException("contenuto riga");
-            if (!File.Exists(filename))
+        //    if (String.IsNullOrEmpty(riga) || String.IsNullOrWhiteSpace(riga))
+        //        throw new ArgumentNullException("contenuto riga");
+        //    if (!File.Exists(filename))
+        //    {
+        //        using (StreamWriter sw = File.CreateText(filename))
+        //        {
+        //            sw.WriteLine(riga);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (StreamWriter sw = File.AppendText(filename))
+        //        {
+        //            sw.WriteLine(riga);
+        //        }
+        //    }
+        //}
+
+        public void Append(Product product)
+        {
+            if(product == null) throw new ArgumentNullException("product");
+            string row = serializer.Serialize(product);
+            if (!File.Exists(filePath))
             {
-                using (StreamWriter sw = File.CreateText(filename))
+                using (StreamWriter sw = File.CreateText(filePath))
                 {
-                    sw.WriteLine(riga);
+                    sw.WriteLine(row);
                 }
             }
             else
             {
-                using (StreamWriter sw = File.AppendText(filename))
+                using (StreamWriter sw = File.AppendText(filePath))
                 {
-                    sw.WriteLine(riga);
+                    sw.WriteLine(row);
                 }
             }
         }
-        public void Reset(string filename)
+
+        public void Delete(int Id)
         {
-            if (String.IsNullOrEmpty(filename) || String.IsNullOrWhiteSpace(filename))
-                throw new ArgumentNullException("filename");
-            File.Delete(filename);
+            using(StreamReader reader = new StreamReader(filePath))
+            
         }
+
+        public void Update(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public void Reset(string filename)
+        //{
+        //    if (String.IsNullOrEmpty(filename) || String.IsNullOrWhiteSpace(filename))
+        //        throw new ArgumentNullException("filename");
+        //    File.Delete(filename);
+        //}
     }
 }

@@ -42,8 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndexManager.cs" />
+    <Compile Include="Interfaces\IFlatFileReader.cs" />
+    <Compile Include="Interfaces\IProductReader.cs" />
+    <Compile Include="Interfaces\IProductRowParser.cs" />
+    <Compile Include="Interfaces\IProductSerializer.cs" />
+    <Compile Include="Interfaces\IProductWriter.cs" />
     <Compile Include="ManagerReader.cs" />
     <Compile Include="ProductReader.cs" />
+    <Compile Include="ProductRepository.cs" />
     <Compile Include="ProductWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationConfirmedWriter.cs" />
