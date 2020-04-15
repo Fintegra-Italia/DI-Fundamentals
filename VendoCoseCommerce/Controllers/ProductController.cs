@@ -1,62 +1,45 @@
 ﻿using DataLayer;
+using DataLayer.Interfaces;
 using DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VendoCoseCommerce.factories;
 using VendoCoseCommerce.Models;
 
 namespace VendoCoseCommerce.Controllers
 {
     public class ProductController : Controller
     {
-
+        private IEntityPersistence<Product> productPersist;
+        public ProductController(IEntityPersistence<Product> productPersist)
+        {
+            this.productPersist = productPersist;
+        }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            IList<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
-
-            IList<ProductViewModel> productListViewModel = productList.Select(product => new ProductViewModel() {
-                                                                                                Id = product.Id,
-                                                                                                Nome = product.Nome,
-                                                                                                Descrizione = product.Descrizione,
-                                                                                                Immagine = @"/Images/" + product.Immagine,
-                                                                                                Prezzo = product.Prezzo,
-                                                                                                Attivo = product.Attivo
-                                                                                        }).ToList();
+            IList<Product> productList = productPersist.Get();
+            IList<ProductViewModel> productListViewModel = productList.Select(
+                product => new ProductViewModelFactory(product)
+                .SetImageFolder("/Images/")
+                .Build())
+                .ToList();
             return View(productListViewModel);
         }
         public ActionResult Details(int Id)
         {
-            var reader = new ProductReader();
-            List<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
-            ProductViewModel productVieModel = productList.Where(e => e.Id == Id).Select(product => new ProductViewModel()
-                                                                                            {
-                                                                                                Id = product.Id,
-                                                                                                Nome = product.Nome,
-                                                                                                Descrizione = product.Descrizione,
-                                                                                                Immagine = @"/Images/" + product.Immagine,
-                                                                                                Prezzo = product.Prezzo,
-                                                                                                Attivo = product.Attivo
-                                                                                            }).FirstOrDefault(); 
-            return View(productVieModel);
+            Product product = productPersist.Get(Id);
+            ProductViewModel productViewModel = new ProductViewModelFactory(product).SetImageFolder("/Images/").Build();
+            return View(productViewModel);
         }
         public ActionResult Edit(int Id)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            List<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
-            ProductViewModel productViewModel = productList.Where(e=>e.Id==Id).Select(product => new ProductViewModel()
-                                                {
-                                                    Id = product.Id,
-                                                    Nome = product.Nome,
-                                                    Descrizione = product.Descrizione,
-                                                    Immagine = @"/Images/" + product.Immagine,
-                                                    Prezzo = product.Prezzo,
-                                                    Attivo = product.Attivo
-                                                }).Single();
+            Product product = productPersist.Get(Id);
+            ProductViewModel productViewModel = new ProductViewModelFactory(product).SetImageFolder("/Images/").Build();
             return View(productViewModel);
         }
 
@@ -64,19 +47,6 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Edit(ProductViewModel productViewModel)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            var productFilePath = Server.MapPath(@"/App_Data/Prodotti.txt");
-            List<Product> productList = reader.Read(productFilePath);
-            ProductViewModel productViewModelOld = productList.Where(e => e.Id == productViewModel.Id).Select(product => new ProductViewModel()
-            {
-                Id = product.Id,
-                Nome = product.Nome,
-                Descrizione = product.Descrizione,
-                Immagine = @"/Images/" + product.Immagine,
-                Prezzo = product.Prezzo,
-                Attivo = product.Attivo
-            }).FirstOrDefault();
-            productViewModel.Immagine = productViewModelOld.Immagine;
 
             Product daInserire = new Product()
             {
@@ -87,17 +57,7 @@ namespace VendoCoseCommerce.Controllers
                 Attivo = productViewModel.Attivo,
                 Prezzo = productViewModel.Prezzo
             };
-
-            productList[productList.FindIndex(e => e.Id == productViewModelOld.Id)] = daInserire;
-
-            var productWriter = new ProductWriter();
-            productWriter.Reset(productFilePath);
-            foreach (var prod in productList)
-            {
-                string linea = $"{prod.Id}|{prod.Nome}|{prod.Descrizione}|{prod.Immagine}|{prod.Prezzo}|{prod.Attivo}|";
-                productWriter.Append(productFilePath, linea);
-
-            }
+            productPersist.Update(daInserire);
             return RedirectToAction("Index", "Product");
         }
     }

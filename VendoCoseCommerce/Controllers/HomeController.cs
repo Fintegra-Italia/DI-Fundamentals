@@ -1,4 +1,5 @@
 ﻿using DataLayer;
+using DataLayer.Interfaces;
 using DomainModel;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,14 @@ namespace VendoCoseCommerce.Controllers
 {
     public class HomeController : Controller
     {
+        private IEntityPersistence<Product> productPersist;
+        public HomeController(IEntityPersistence<Product> productPersist)
+        {
+            this.productPersist = productPersist;
+        }
         public ActionResult Index()
         {
-            var reader = new ProductReader();
-            var productFilePath = Server.MapPath(@"/App_Data/Prodotti.txt");
-            List<Product> productList = reader.Read(productFilePath);
+            IList<Product> productList = productPersist.Get();
             List<ProductViewModel> productListViewModel = productList.Select(
                 product => new ProductViewModelFactory(product)
                 .SetImageFolder("/Images/")

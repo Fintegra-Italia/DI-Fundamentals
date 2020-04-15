@@ -1,4 +1,5 @@
 using DataLayer;
+using DataLayer.Interfaces;
 using DomainModel;
 using System;
 
@@ -30,7 +31,11 @@ namespace VendoCoseCommerce
 
         public static void RegisterTypes(IUnityContainer container)
         {
-
+            container.RegisterType<IEntityPersistence<Product>, ProductFilePersistence>(
+                new InjectionConstructor(new object[] {
+                    @"App_Data/Prodotti.txt",
+                    new ProductRowParser('|'),
+                    new ProductEntitySerializer('|') }));
         }
     }
 }

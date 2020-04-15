@@ -41,8 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilePersistence.cs" />
     <Compile Include="IndexManager.cs" />
+    <Compile Include="Interfaces\IEntityPersistence.cs" />
+    <Compile Include="Interfaces\IRowParser.cs" />
+    <Compile Include="Interfaces\IEntitySerializer.cs" />
     <Compile Include="ManagerReader.cs" />
+    <Compile Include="ProductEntitySerializer.cs" />
+    <Compile Include="ProductFilePersistence.cs" />
     <Compile Include="ProductReader.cs" />
     <Compile Include="ProductWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +56,7 @@
     <Compile Include="ReservationConfirmedReader.cs" />
     <Compile Include="ReservationWriter.cs" />
     <Compile Include="ReservationReader.cs" />
+    <Compile Include="ProductRowParser.cs" />
     <Compile Include="UserReader.cs" />
     <Compile Include="UserWriter.cs" />
   </ItemGroup>
