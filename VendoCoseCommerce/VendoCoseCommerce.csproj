@@ -147,6 +147,8 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminAreaController.cs" />
+    <Compile Include="Controllers\ErroreController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
@@ -332,6 +334,9 @@
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Reservation\Index.cshtml" />
+    <Content Include="Views\File\Index.cshtml" />
+    <Content Include="Views\File\Upload.cshtml" />
+    <Content Include="Views\Errore\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

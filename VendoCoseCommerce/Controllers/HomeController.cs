@@ -13,21 +13,26 @@ namespace VendoCoseCommerce.Controllers
 {
     public class HomeController : Controller
     {
-        IProductRepository productRepo;
-        public HomeController(IProductRepository productRepo)
+        IProductService productService;
+        public HomeController(IProductService productService)
         {
-            this.productRepo = productRepo ?? throw new ArgumentNullException("Product Repository");
+            this.productService = productService ?? throw new ArgumentNullException("Product Repository");
         }
         public ActionResult Index()
         {
+            Account user = (Account)Session["user"];
             //var reader = new ProductReader();
             //var productFilePath = Server.MapPath(@"/App_Data/Prodotti.txt");
             //List<Product> productList = reader.Read(productFilePath);
-            IList<Product> productList = productRepo.Get();
+            IList<Product> productList = productService.For(user)
+                                                        .IfAccountTypeIs(Account.tipo.Premium)
+                                                        .ApplyDiscount(e => e * 0.90M)
+                                                        .GetAll();
+
             List<ProductViewModel> productListViewModel = productList.Select(
                 product => new ProductViewModelFactory(product)
-                .SetImageFolder("/Images/")
-                .Build()
+                                        .SetImageFolder("/Images/")
+                                        .Build()
                 ).ToList();
             return View(productListViewModel);
         }

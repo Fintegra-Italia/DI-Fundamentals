@@ -1,0 +1,36 @@
+﻿@using DomainModel.Interfaces
+@{
+    ViewBag.Title = "Importa File";
+}
+
+<h2 class="text-center mt-5">Importa File</h2>
+<div class="row">
+    <div class="col-xs-12 offset-xs-0 col-md-4 offset-md-4">
+        @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { id = "UploadFile", enctype = "multipart/form-data" }))
+        {
+            <div class="form-control">
+                <label for="contenuto">Contenuto</label>
+                <select id="contenuto" name="contenuto">
+                    <option value="-1">-------</option>
+                    @foreach (ContenutoFile cont in (ContenutoFile[])Enum.GetValues(typeof(ContenutoFile)))
+                    {
+                        <option value="@cont">@cont.ToString()</option>
+                    }
+
+                </select>
+                @Html.ValidationMessage("contenuto", new { @class = "text-danger d-block" })
+            </div>
+            <div class="form-control-file mt-4">
+                <label for="file">File da Caricare</label>
+                <input type="file" name="file" />
+                @Html.ValidationMessage("file", new { @class = "text-danger d-block" })
+            </div>
+            <div class="">
+                
+                <button type="submit" class="btn btn-sm btn-success float-right">Upload</button>
+            </div>
+            
+        }
+    </div>
+</div>
+

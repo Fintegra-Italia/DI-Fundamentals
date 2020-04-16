@@ -1,4 +1,5 @@
 using DataLayer;
+using DataLayer.Import;
 using DataLayer.Interfaces;
 using DomainModel;
 using DomainModel.Interfaces;
@@ -36,6 +37,11 @@ namespace VendoCoseCommerce
             container.RegisterType<IProductWriter, ProductWriter>(new InjectionConstructor(new object[] { productFile, new ProductSerializer('|'), new ProductRowParser('|') }));
             container.RegisterType<IProductReader, ProductReader>(new InjectionConstructor(new object[] { new ProductRowParser('|'), new FlatFileReader(productFile) }));
             container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IProductService, ProductService>();
+            container.RegisterType<IProductRowParser, ProductRowParser>(new InjectionConstructor(new object[] { '|' }));
+            container.RegisterType<IProductSerializer, ProductJsonSerializer>();
+            container.RegisterType<IFileReaderByStream, StreamToStringList>();
+            container.RegisterType<IImportService, ImportService>(new InjectionProperty("ProductFilePath",  "App_Data/Prodotti.tjson" ));
         }
     }
 }

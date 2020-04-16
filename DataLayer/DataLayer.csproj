@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,13 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FlatFileReader.cs" />
+    <Compile Include="Import\ImportService.cs" />
     <Compile Include="IndexManager.cs" />
+    <Compile Include="Interfaces\IFileReaderByStream.cs" />
     <Compile Include="Interfaces\IFlatFileReader.cs" />
     <Compile Include="Interfaces\IProductReader.cs" />
     <Compile Include="Interfaces\IProductRowParser.cs" />
     <Compile Include="Interfaces\IProductSerializer.cs" />
     <Compile Include="Interfaces\IProductWriter.cs" />
     <Compile Include="ManagerReader.cs" />
+    <Compile Include="Product\ProductJsonRowParser.cs" />
+    <Compile Include="Product\ProductJsonSerializer.cs" />
     <Compile Include="Product\ProductReader.cs" />
     <Compile Include="Product\ProductRepository.cs" />
     <Compile Include="Product\ProductRowParser.cs" />
@@ -59,6 +66,7 @@
     <Compile Include="ReservationConfirmedReader.cs" />
     <Compile Include="ReservationWriter.cs" />
     <Compile Include="ReservationReader.cs" />
+    <Compile Include="StreamToStringList.cs" />
     <Compile Include="UserReader.cs" />
     <Compile Include="UserWriter.cs" />
   </ItemGroup>
@@ -67,6 +75,9 @@
       <Project>{96D70FC3-F3A6-47DC-B30D-988EBD389D6F}</Project>
       <Name>DomainModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
