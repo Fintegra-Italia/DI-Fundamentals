@@ -30,7 +30,8 @@ namespace DataLayer
             if (string.IsNullOrEmpty(splitted[3]) || string.IsNullOrWhiteSpace(splitted[3])) throw new FormatException("invalid format: Immagine");
             if (!decimal.TryParse(splitted[4], out Prezzo)) throw new FormatException("invalid format: Prezzo");
             if (!bool.TryParse(splitted[5], out Attivo)) throw new FormatException("invalid format: Attivo");
-
+            if(Id<0) throw new FormatException("invalid format: Negative Id");
+            if(Prezzo<0) throw new FormatException("invalid format: Prezzo Negativo");
             return new Product()
             {
                 Id = Id,

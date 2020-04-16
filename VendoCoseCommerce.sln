@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "DomainModel\DomainModel.csproj", "{96D70FC3-F3A6-47DC-B30D-988EBD389D6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayerTests", "DataLayerTests\DataLayerTests.csproj", "{FFF8CD73-3EA9-44C8-827B-3743E700874F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{96D70FC3-F3A6-47DC-B30D-988EBD389D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D70FC3-F3A6-47DC-B30D-988EBD389D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D70FC3-F3A6-47DC-B30D-988EBD389D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF8CD73-3EA9-44C8-827B-3743E700874F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF8CD73-3EA9-44C8-827B-3743E700874F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF8CD73-3EA9-44C8-827B-3743E700874F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF8CD73-3EA9-44C8-827B-3743E700874F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

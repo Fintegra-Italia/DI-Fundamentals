@@ -13,8 +13,7 @@ namespace DataLayer
         private string filePath;
         public FlatFileReader(string filePath)
         {
-            if (filePath == null) throw new ArgumentNullException("file path");
-            this.filePath = AppDomain.CurrentDomain.BaseDirectory + filePath ;
+            this.filePath = filePath ??  throw new ArgumentNullException("file path");
         }
         public IList<string> Read()
         {
