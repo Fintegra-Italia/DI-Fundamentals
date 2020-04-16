@@ -11,6 +11,13 @@ namespace VendoCoseCommerce.Controllers
 {
     public class ReservationController : Controller
     {
+        IProductReader productReader;
+        string filepath = @"/App_Data/Prodotti.txt";
+        public ReservationController(IProductReader productReader)
+        {
+
+            this.productReader = productReader ?? throw new ArgumentException("product reader");
+        }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
@@ -104,10 +111,10 @@ namespace VendoCoseCommerce.Controllers
         {
             if (Session["logged"] == null) return RedirectToAction("Index", "Home");
             var User = (Account)Session["user"];
-            string fileProdotti = Server.MapPath(@"/App_Data/Prodotti.txt");
+            string fileProdotti = Server.MapPath(filepath);
             string fileIndicePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni_Last_Id.txt");
             string filePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni.txt");
-            var productReader = new ProductReader();
+            //var productReader = new ProductReader();
             var indexManager = new IndexManager();
             var reservationWriter = new ReservationWriter();
             IList<Product> listaProdotti = productReader.Read(fileProdotti);

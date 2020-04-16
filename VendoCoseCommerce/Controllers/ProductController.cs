@@ -11,12 +11,18 @@ namespace VendoCoseCommerce.Controllers
 {
     public class ProductController : Controller
     {
+        IProductReader reader;
+        string filepath = @"/App_Data/Prodotti.txt";
+        public ProductController(IProductReader productReader)
+        {
 
+            this.reader = productReader ?? throw new ArgumentException("product reader");
+        }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            IList<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
+            //var reader = new ProductReader();
+            IList<Product> productList = reader.Read(Server.MapPath(filepath));
 
             IList<ProductViewModel> productListViewModel = productList.Select(product => new ProductViewModel() {
                                                                                                 Id = product.Id,
@@ -30,8 +36,8 @@ namespace VendoCoseCommerce.Controllers
         }
         public ActionResult Details(int Id)
         {
-            var reader = new ProductReader();
-            List<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
+            //var reader = new ProductReader();
+            List<Product> productList = reader.Read(Server.MapPath(filepath));
             ProductViewModel productVieModel = productList.Where(e => e.Id == Id).Select(product => new ProductViewModel()
                                                                                             {
                                                                                                 Id = product.Id,
@@ -46,8 +52,8 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Edit(int Id)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            List<Product> productList = reader.Read(Server.MapPath(@"/App_Data/Prodotti.txt"));
+            //var reader = new ProductReader();
+            List<Product> productList = reader.Read(Server.MapPath(filepath));
             ProductViewModel productViewModel = productList.Where(e=>e.Id==Id).Select(product => new ProductViewModel()
                                                 {
                                                     Id = product.Id,
@@ -64,8 +70,8 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Edit(ProductViewModel productViewModel)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reader = new ProductReader();
-            var productFilePath = Server.MapPath(@"/App_Data/Prodotti.txt");
+            //var reader = new ProductReader();
+            var productFilePath = Server.MapPath(filepath);
             List<Product> productList = reader.Read(productFilePath);
             ProductViewModel productViewModelOld = productList.Where(e => e.Id == productViewModel.Id).Select(product => new ProductViewModel()
             {

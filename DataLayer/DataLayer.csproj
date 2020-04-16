@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndexManager.cs" />
+    <Compile Include="Interfaces\IProductParser.cs" />
+    <Compile Include="IProductReader.cs" />
     <Compile Include="ManagerReader.cs" />
+    <Compile Include="ProductParser.cs" />
     <Compile Include="ProductReader.cs" />
     <Compile Include="ProductWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

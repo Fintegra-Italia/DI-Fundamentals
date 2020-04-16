@@ -1,4 +1,5 @@
 using DataLayer;
+using DataLayer.Interfaces;
 using DomainModel;
 using System;
 
@@ -30,7 +31,8 @@ namespace VendoCoseCommerce
 
         public static void RegisterTypes(IUnityContainer container)
         {
-
+            container.RegisterType<IProductReader, ProductReader>();
+            container.RegisterType<IProductParser, ProductParser>();
         }
     }
 }
