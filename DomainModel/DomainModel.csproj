@@ -44,7 +44,6 @@
     <Compile Include="Account.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Interfaces\Import\IImportService.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\Product\IProductRepository.cs" />
     <Compile Include="Interfaces\Product\IProductService.cs" />
     <Compile Include="Manager.cs" />
