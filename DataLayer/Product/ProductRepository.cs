@@ -9,38 +9,30 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class ProductRepository : IProductRepository
-    {
-        IProductWriter writer;
-        IProductReader reader;
-        public ProductRepository(IProductWriter writer, IProductReader reader)
-        {
-            this.writer = writer ?? throw new ArgumentNullException("writer");
-            this.reader = reader ?? throw new ArgumentNullException("reader");
-        }
+    public class ProductRepository<Product> : IRepository<Product>
         public void Delete(int Id)
         {
-            writer.Delete(Id);
-        }
-
-        public IList<Product> Get()
-        {
-            return reader.Get();
+            throw new NotImplementedException();
         }
 
         public Product Get(int Id)
         {
-            return reader.Get(Id);
+            throw new NotImplementedException();
         }
 
-        public void Insert(Product product)
+        public IList<Product> Get()
         {
-            writer.Append(product);
+            throw new NotImplementedException();
         }
 
-        public void Update(Product product)
+        public void Insert(Product entity)
         {
-            writer.Update(product);
+            throw new NotImplementedException();
+        }
+
+        public void Update(Product entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
