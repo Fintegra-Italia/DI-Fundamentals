@@ -14,10 +14,12 @@ namespace VendoCoseCommerce.Controllers
     {
         IRepository<Account> accountRepo;
         IRepository<Reservation> reservationRepo;
-        public AccountController(IRepository<Account> accountRepo, IRepository<Reservation> reservationRepo)
+        IRepository<Manager> managerRepo;
+        public AccountController(IRepository<Account> accountRepo, IRepository<Reservation> reservationRepo, IRepository<Manager> managerRepo)
         {
             this.accountRepo = accountRepo ?? throw new ArgumentNullException("Account Repository");
             this.reservationRepo = reservationRepo ?? throw new ArgumentNullException("Reservation Repository");
+            this.managerRepo = managerRepo ?? throw new ArgumentNullException("Manager Repository");
         }
         public ActionResult Index()
         {
@@ -69,9 +71,8 @@ namespace VendoCoseCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                string filePath = Server.MapPath(@"/App_Data/Gestori.txt");
-                var reader = new ManagerReader();
-                IList<Manager> listaManager = reader.Read(filePath);
+
+                IList<Manager> listaManager = managerRepo.Get();
                 Manager verificaEmail = listaManager.FirstOrDefault(e => e.Email == accountLogin.Email);
                 if (verificaEmail == null)
                 {

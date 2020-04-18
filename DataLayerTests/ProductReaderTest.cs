@@ -40,13 +40,13 @@ namespace DataLayerTests
             {
                 productFactory("1|SmartWatch 2|Smartwatch con funzioni fitness, contapassi etc.|smartwatch-android-display.jpg|120,50|True"),
             };
+            Assert.IsTrue(false, "TEst da modificare o eliminare");
+            //var productReader = new ProductReader(productRowParser.Object, fileReader.Object);
 
-            var productReader = new ProductReader(productRowParser.Object, fileReader.Object);
+            //IList<Product> actual = productReader.Get();
 
-            IList<Product> actual = productReader.Get();
-
-            CollectionAssert.AreEqual((List<Product>)expected, (List<Product>)actual, "Errore non sono identici");
-            productRowParser.Verify(m => m.Parse(It.IsAny<string>()), Times.Once);
+            //CollectionAssert.AreEqual((List<Product>)expected, (List<Product>)actual, "Errore non sono identici");
+            //productRowParser.Verify(m => m.Parse(It.IsAny<string>()), Times.Once);
         }
     }
 }
