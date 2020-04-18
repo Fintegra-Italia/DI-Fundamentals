@@ -86,64 +86,46 @@ namespace VendoCoseCommerce.Controllers
         {
             if (Session["logged"] == null) return RedirectToAction("Index", "Home");
             var User = (Account)Session["user"];
-            string fileProdotti = Server.MapPath(@"/App_Data/Prodotti.txt");
-            string fileIndicePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni_Last_Id.txt");
-            string filePrenotazioni = Server.MapPath(@"/App_Data/Prenotazioni.txt");
-            //var productReader = new ProductReader();
-            var indexManager = new IndexManager();
-            var reservationWriter = new ReservationWriter();
-            IList<Product> listaProdotti = productRepo.Get();//productReader.Read(fileProdotti);
+
+            IList<Product> listaProdotti = productRepo.Get();
 
             Product prodotto = listaProdotti.FirstOrDefault(e => e.Id == IdProdotto);
             if (prodotto != null)
             {
-                int indicePrenotazione = indexManager.Read(fileIndicePrenotazioni) + 1;
-                string linea = $"{indicePrenotazione}|{DateTime.Now}|{User.Id}|{prodotto.Id}|{prodotto.Nome}|{prodotto.Prezzo}|{false}|{false}";
-                reservationWriter.Append(filePrenotazioni, linea);
-                indexManager.Write(fileIndicePrenotazioni, indicePrenotazione);
+                var prenotazione = new Reservation()
+                {
+                    Data = DateTime.Now,
+                    IdAccount = User.Id,
+                    IdProdotto = IdProdotto,
+                    NomeProdotto = prodotto.Nome,
+                    Prezzo = prodotto.Prezzo,
+                    Confermata = false,
+                    Evasa = false
+                };
+                reservationRepo.Insert(prenotazione);
             }
-
             return RedirectToAction("Detail", "Account");
         }
         public ActionResult Confirm(int Id)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reservationReader = new ReservationReader();
-            var reservationWriter = new ReservationWriter();
-            var reservationConfirmedWriter = new ReservationConfirmedWriter();
-            string filepathPrenotazioniConfermate = Server.MapPath("~/App_Data/Confermato.txt");
-            string filepathPrenotazioni = Server.MapPath("~/App_Data/Prenotazioni.txt");
-            string fileindexPrenotazioniConfermate = Server.MapPath("~/App_Data/Confermato_Last_Id.txt");
-            IList<Reservation> listaPrenotazioni = reservationReader.Read(filepathPrenotazioni);
-            var indexManager = new IndexManager();
-            int index = indexManager.Read(fileindexPrenotazioniConfermate);
-
-            ReservationConfirmed prenoConf = listaPrenotazioni.Where(e => e.Id == Id)
-                .Select(pre => new ReservationConfirmed()
-                {
-                    Id = index + 1,
-                    IdReservation = pre.Id,
-                    Data = pre.Data,
-                    IdAccount = pre.IdAccount,
-                    IdProdotto = pre.IdProdotto,
-                    NomeProdotto = pre.NomeProdotto,
-                    Prezzo = pre.Prezzo,
-                    DataConferma = DateTime.Now,
-                    Evasa = false,
-                    DataEvasione = new DateTime(2000,1,1,0,0,0)
-                }).First();
-
-            string linea = $"{prenoConf.Id}|{prenoConf.IdReservation}|{prenoConf.Data}|{prenoConf.IdAccount}|{prenoConf.IdProdotto}|{prenoConf.NomeProdotto}|{prenoConf.Prezzo}|{prenoConf.DataConferma}|{prenoConf.Evasa}|{prenoConf.DataEvasione}";
-            reservationConfirmedWriter.Append(filepathPrenotazioniConfermate, linea);
-            indexManager.Write(fileindexPrenotazioniConfermate, index + 1);
-
-            listaPrenotazioni.First(e => e.Id == Id).Confermata = true;
-            reservationWriter.Reset(filepathPrenotazioni);
-            foreach(var pre in listaPrenotazioni)
+            Reservation pre = reservationRepo.Get(Id); 
+            ReservationConfirmed prenoConf = new ReservationConfirmed()
             {
-                string l = $"{pre.Id}|{pre.Data}|{pre.IdAccount}|{pre.IdProdotto}|{pre.NomeProdotto}|{pre.Prezzo}|{pre.Confermata}|{false}";
-                reservationWriter.Append(filepathPrenotazioni, l);
-            }
+                IdReservation = pre.Id,
+                Data = pre.Data,
+                IdAccount = pre.IdAccount,
+                IdProdotto = pre.IdProdotto,
+                NomeProdotto = pre.NomeProdotto,
+                Prezzo = pre.Prezzo,
+                DataConferma = DateTime.Now,
+                Evasa = false,
+                DataEvasione = new DateTime(2000, 1, 1, 0, 0, 0)
+            };
+
+            reservationConfirmedRepo.Insert(prenoConf);
+            pre.Confermata = true;
+            reservationRepo.Update(pre);
 
             return RedirectToAction("Index", "Reservation");
         }
