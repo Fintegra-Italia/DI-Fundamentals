@@ -9,11 +9,11 @@ namespace DomainModel
 {
     public class ProductService : IProductService
     {
-        private IProductRepository productRepository;
+        private IRepository<Product> productRepository;
         private Account user;
         private Account.tipo tipoAccount;
         private Func<decimal, decimal> discount;
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IRepository<Product> productRepository)
         {
             this.productRepository = productRepository ?? throw new ArgumentNullException("Product Respository");
             this.user = null;

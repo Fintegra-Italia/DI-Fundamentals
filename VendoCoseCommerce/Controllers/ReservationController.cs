@@ -12,25 +12,25 @@ namespace VendoCoseCommerce.Controllers
 {
     public class ReservationController : Controller
     {
-        IProductRepository productRepo;
-        public ReservationController(IProductRepository productRepo)
+        IRepository<Product> productRepo;
+        IRepository<Reservation> reservationRepo;
+        IRepository<ReservationConfirmed> reservationConfirmedRepo;
+        IRepository<Account> accountRepo;
+        public ReservationController(IRepository<Product> productRepo, IRepository<Reservation> reservationRepo,
+                                        IRepository<ReservationConfirmed> reservationConfirmedRepo, IRepository<Account> accountRepo)
         {
             this.productRepo = productRepo ?? throw new ArgumentNullException("Product Repository");
+            this.reservationRepo = reservationRepo ?? throw new ArgumentNullException("Reservation Repository");
+            this.reservationConfirmedRepo = reservationConfirmedRepo ?? throw new ArgumentNullException("Reservation Confirmed Repository");
+            this.accountRepo = accountRepo ?? throw new ArgumentNullException("Account Repository");
         }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reservationReader = new ReservationReader();
-            string filepathPrenotazioni = Server.MapPath("~/App_Data/Prenotazioni.txt");
-            IList<Reservation> listaPrenotazioni = reservationReader.Read(filepathPrenotazioni);
 
-            string filepathAccount = Server.MapPath("~/App_Data/Utenti.txt");
-            var accountReader = new UserReader();
-            IList<Account> listaAccount = accountReader.Read(filepathAccount);
-
-            string filepathConfermato = Server.MapPath("~/App_Data/Confermato.txt");
-            var confirmedReader = new ReservationConfirmedReader();
-            IList<ReservationConfirmed> prenotazioniConfermate = confirmedReader.Read(filepathConfermato);
+            IList<Reservation> listaPrenotazioni = reservationRepo.Get();
+            IList<ReservationConfirmed> prenotazioniConfermate = reservationConfirmedRepo.Get();
+            IList<Account> listaAccount = accountRepo.Get();
 
             IList<ReservationViewModel> listaPrenotazioneViewModel = listaPrenotazioni.Where(k=>k.Confermata==false)
                 .Select(pre => new ReservationViewModel()
@@ -77,31 +77,7 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Remove(int Id)
         {
             if (Session["logged"] == null) return RedirectToAction("Index", "Home");
-            var User = (Account)Session["user"];
-
-            string filePath = Server.MapPath(@"/App_Data/Prenotazioni.txt");
-            var reader = new ReservationReader();
-            IList<Reservation> listaPrenotazioni = reader.Read(filePath);
-            var daEliminare = listaPrenotazioni.FirstOrDefault(e => e.Id == Id);
-            if (daEliminare != null)
-            {
-                var writer = new ReservationWriter();
-                listaPrenotazioni.Remove(daEliminare);
-                writer.Reset(filePath);
-                if(listaPrenotazioni.Count > 0)
-                {
-                    foreach (var preno in listaPrenotazioni)
-                    {
-                        string linea = $"{preno.Id}|{preno.Data}|{preno.IdAccount}|{preno.IdProdotto}|{preno.NomeProdotto}|{preno.Prezzo}|{preno.Confermata}|{preno.Evasa}";
-                        writer.Append(filePath, linea);
-                    }
-                }
-                else
-                {
-                    writer.Reset(filePath);
-                }
-
-            }
+            reservationRepo.Delete(Id);
             return RedirectToAction("Detail", "Account");
         }
 
@@ -174,36 +150,15 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Complete(int Id)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            var reservationReader = new ReservationReader();
-            var reservationWriter = new ReservationWriter();
-            string fileReservation = Server.MapPath("~/App_Data/Prenotazioni.txt");
-            var reservationConfirmReader = new ReservationConfirmedReader();
-            var reservationConfirmWriter = new ReservationConfirmedWriter();
-            string fileReservationConfirmed = Server.MapPath("~/App_Data/Confermato.txt");
 
-            IList<Reservation> prenotazioni = reservationReader.Read(fileReservation);
-            IList<ReservationConfirmed> confermate = reservationConfirmReader.Read(fileReservationConfirmed);
-
-            ReservationConfirmed evasa = confermate.First(e => e.Id == Id);
+            ReservationConfirmed evasa = reservationConfirmedRepo.Get(Id);
             evasa.Evasa = true;
             evasa.DataEvasione = DateTime.Now;
-            Reservation daAggiornare = prenotazioni.First(e => e.Id == evasa.IdReservation);
+            reservationConfirmedRepo.Update(evasa);
+
+            Reservation daAggiornare = reservationRepo.Get(evasa.IdReservation);
             daAggiornare.Evasa = true;
-
-            reservationWriter.Reset(fileReservation);
-            foreach(var pre in prenotazioni)
-            {
-                string l = $"{pre.Id}|{pre.Data}|{pre.IdAccount}|{pre.IdProdotto}|{pre.NomeProdotto}|{pre.Prezzo}|{pre.Confermata}|{pre.Evasa}";
-                reservationWriter.Append(fileReservation, l);
-            }
-
-            reservationConfirmWriter.Reset(fileReservationConfirmed);
-            foreach(var prenoConf in confermate)
-            {
-                string linea = $"{prenoConf.Id}|{prenoConf.IdReservation}|{prenoConf.Data}|{prenoConf.IdAccount}|{prenoConf.IdProdotto}|{prenoConf.NomeProdotto}|{prenoConf.Prezzo}|{prenoConf.DataConferma}|{prenoConf.Evasa}|{prenoConf.DataEvasione}";
-                reservationConfirmWriter.Append(fileReservationConfirmed, linea);
-            }
-
+            reservationRepo.Update(daAggiornare);
             return RedirectToAction("Index", "Reservation");
 
         }

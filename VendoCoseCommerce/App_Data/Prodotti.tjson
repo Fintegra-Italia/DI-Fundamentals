@@ -1,9 +1,0 @@
-{"Nome":"SmartWatch 2","Descrizione":"Smartwatch con funzioni fitness, contapassi etc.","Immagine":"smartwatch-android-display.jpg","Prezzo":120.50,"Attivo":true,"Id":1}
-{"Nome":"Mouse Pad mondo","Descrizione":"Mouse pad con raffigurazione mappa mondiale ","Immagine":"mousepadmondo_.jpg","Prezzo":12.0,"Attivo":true,"Id":7}
-{"Nome":"Mini Cuffie Stereo","Descrizione":"Mini cuffie stereo con microfono per chiamate e ascoltare musica","Immagine":"cuffiefilo.jpg","Prezzo":16.00,"Attivo":true,"Id":8}
-{"Nome":"Cavetto USB 1mt","Descrizione":"Cavo USB nero lunghezza 1mt","Immagine":"cavousb1mt.jpg","Prezzo":2.50,"Attivo":true,"Id":9}
-{"Nome":"Mouse Longitex","Descrizione":"Mouse senza fili, wifi con lettura laser","Immagine":"mouse_laser.jpg","Prezzo":22.00,"Attivo":true,"Id":2}
-{"Nome":"Mouse Initial B","Descrizione":"Mouse bluethoot, funziona su ogni superfice","Immagine":"mouse203.jpg","Prezzo":25.50,"Attivo":true,"Id":4}
-{"Nome":"Smarthpone Android AK-47","Descrizione":"Smarthphone con doppia fotocamera,memoria 64GB","Immagine":"smartphone-android.jpg","Prezzo":235.00,"Attivo":true,"Id":5}
-{"Nome":"Smart Band","Descrizione":"Smart Band con funzioni fitness, contapassi etc.","Immagine":"smartband.jpg","Prezzo":98.50,"Attivo":false,"Id":6}
-{"Nome":"Alimentatore Smartphone","Descrizione":"Caricabatteria 5W a carica rapida connettore micro USB","Immagine":"alimentatore_usb_Bianco.jpg","Prezzo":12.0,"Attivo":true,"Id":3}

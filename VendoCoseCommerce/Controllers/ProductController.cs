@@ -12,8 +12,8 @@ namespace VendoCoseCommerce.Controllers
 {
     public class ProductController : Controller
     {
-        IProductRepository productRepo;
-        public ProductController(IProductRepository productRepo)
+        IRepository<Product> productRepo;
+        public ProductController(IRepository<Product> productRepo)
         {
             this.productRepo = productRepo ?? throw new ArgumentNullException("Product Repository");
         }

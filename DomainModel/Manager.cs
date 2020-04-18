@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainModel
 {
-    public class Manager
+    public class Manager : Entity
     {
         public enum ruolo
         {
@@ -14,7 +14,6 @@ namespace DomainModel
             SuperUser = 2,
             Guest = 3
         }
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string Cognome { get; set; }
         public string Email { get; set; }

@@ -7,7 +7,9 @@ namespace DomainModel.Interfaces
     {
         Prodotti = 1,
         Prenotazioni = 2,
-        PrenotazioneConfermate = 3
+        PrenotazioneConfermate = 3,
+        Account = 4,
+        Manager = 5
     }
     public interface IImportService
     {

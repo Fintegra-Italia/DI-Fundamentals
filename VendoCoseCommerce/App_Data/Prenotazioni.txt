@@ -4,3 +4,4 @@
 6|13/04/2020 10:55:38|1|8|Mini Cuffie Stereo|16,00|True|False
 8|14/04/2020 18:32:33|1|2|Mouse Longitex|22,00|True|False
 9|15/04/2020 18:18:18|1|9|Cavetto USB 1mt|2,50|True|True
+10|18/04/2020 08:39:51|3|3|Cavetto USB 1mt|2,50|False|False

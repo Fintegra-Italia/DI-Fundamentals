@@ -1,5 +1,6 @@
 ﻿using DataLayer;
 using DomainModel;
+using DomainModel.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,17 @@ namespace VendoCoseCommerce.Controllers
 {
     public class AccountController : Controller
     {
+        IRepository<Account> accountRepo;
+        IRepository<Reservation> reservationRepo;
+        public AccountController(IRepository<Account> accountRepo, IRepository<Reservation> reservationRepo)
+        {
+            this.accountRepo = accountRepo ?? throw new ArgumentNullException("Account Repository");
+            this.reservationRepo = reservationRepo ?? throw new ArgumentNullException("Reservation Repository");
+        }
         public ActionResult Index()
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            string filePath = Server.MapPath(@"/App_Data/Utenti.txt");
-            var reader = new UserReader();
-            IList<Account> listaAccount = reader.Read(filePath);
+            IList<Account> listaAccount = accountRepo.Get();
             IList<AccountViewModel> listaAccountViewModel = listaAccount.Select(account => new AccountViewModel()
                                                                             {
                                                                                Id = account.Id,
@@ -39,9 +45,7 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult LoginExec(AccountLoginViewModel accountLogin) {
             if (ModelState.IsValid)
             {
-                string filePath = Server.MapPath(@"/App_Data/Utenti.txt");
-                var reader = new UserReader();
-                IList<Account> listaAccount = reader.Read(filePath);
+                IList<Account> listaAccount = accountRepo.Get();
                 Account verificaEmail = listaAccount.FirstOrDefault(e => e.Email == accountLogin.Email);
                 if (verificaEmail == null)
                 {
@@ -98,10 +102,7 @@ namespace VendoCoseCommerce.Controllers
         {
             if (Session["logged"] == null) return RedirectToAction("Index", "Home");
             var User = (Account)Session["user"];
-
-            string filePath = Server.MapPath(@"/App_Data/Prenotazioni.txt");
-            var reader = new ReservationReader();
-            IList<Reservation> listaPrenotazioni = reader.Read(filePath);
+            IList<Reservation> listaPrenotazioni = reservationRepo.Get();
             IList<AccountReservationViewModel> listaPrenotazioniAccount = listaPrenotazioni.Where(e => e.IdAccount == User.Id)
                                                                                             .Select(res => new AccountReservationViewModel()
                                                                                                 {
@@ -136,36 +137,26 @@ namespace VendoCoseCommerce.Controllers
         public ActionResult Edit(int Id)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            string filePath = Server.MapPath(@"/App_Data/Utenti.txt");
-            var reader = new UserReader();
-            IList<Account> listaAccount = reader.Read(filePath);
-            AccountViewModel account = listaAccount.Where(e => e.Id == Id).Select(acc => new AccountViewModel()
-            {
-                Id = acc.Id,
-                Nome = acc.Nome,
-                Cognome = acc.Cognome,
-                Email = acc.Email,
-                TipoAccount = (acc.Tipo == Account.tipo.Normal) ? "Normal" : "Premium"
-            }).First();
-            return View(account);
+
+            Account account = accountRepo.Get(Id);
+            AccountViewModel accountViewModel = new AccountViewModel()
+                                                    {
+                                                        Id = account.Id,
+                                                        Nome = account.Nome,
+                                                        Cognome = account.Cognome,
+                                                        Email = account.Email,
+                                                        TipoAccount = (account.Tipo == Account.tipo.Normal) ? "Normal" : "Premium"
+                                                    };
+            return View(accountViewModel);
         }
         [HttpPost]
         public ActionResult Edit(int Id, string tipo)
         {
             if (Session["loggedAdmin"] == null) return RedirectToAction("Index", "Home");
-            string filePath = Server.MapPath(@"/App_Data/Utenti.txt");
-            var reader = new UserReader();
-            var writer = new UserWriter();
-            IList<Account> listaAccount = reader.Read(filePath);
-            var daAggiornare = listaAccount.First(e => e.Id == Id);
+
+            Account daAggiornare = accountRepo.Get(Id);
             daAggiornare.Tipo = (tipo == "Normal") ? Account.tipo.Normal : Account.tipo.Premium;
-            writer.Reset(filePath);
-            foreach(var account in listaAccount)
-            {
-                int Tipo = (account.Tipo == Account.tipo.Normal) ? 1 : 2;
-                string linea = $"{account.Id},{account.Nome},{account.Cognome},{account.Email},{account.Password},{Tipo}";
-                writer.Append(filePath, linea);
-            }
+            accountRepo.Update(daAggiornare);
             return RedirectToAction("Index", "Account");
         }
     }

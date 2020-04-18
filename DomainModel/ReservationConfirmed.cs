@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainModel
 {
-    public class ReservationConfirmed
+    public class ReservationConfirmed : Entity
     {
-        public int Id { get; set; }
         public int IdReservation { get; set; }
         public DateTime Data { get; set; }
         public int IdAccount { get; set; }
